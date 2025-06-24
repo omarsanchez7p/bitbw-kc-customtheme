@@ -1,4 +1,5 @@
-oc run debug -it --rm --overrides='{
+oc run debug -it --rm \
+--overrides='{
   "spec": {
     "containers": [
       {
@@ -15,8 +16,24 @@ oc run debug -it --rm --overrides='{
             "cpu": "200m",
             "memory": "128Mi"
           }
+        },
+        "volumeMounts": [
+          {
+            "name": "theme-volume",
+            "mountPath": "/mnt/pvc"
+          }
+        ]
+      }
+    ],
+    "volumes": [
+      {
+        "name": "theme-volume",
+        "persistentVolumeClaim": {
+          "claimName": "keycloak-theme-pvc"
         }
       }
     ]
   }
-}' --image=alpine:latest --restart=Never -- /bin/bash
+}' \
+--restart=Never \
+-- /bin/bash
