@@ -1,0 +1,22 @@
+oc run debug -it --rm --overrides='{
+  "spec": {
+    "containers": [
+      {
+        "image": "registry.os.bwl.de/postgrescluster/debugpod:latest",
+        "name": "debug2",
+        "tty": true,
+        "stdin": true,
+        "resources": {
+          "limits": {
+            "cpu": "300m",
+            "memory": "256Mi"
+          },
+          "requests": {
+            "cpu": "200m",
+            "memory": "128Mi"
+          }
+        }
+      }
+    ]
+  }
+}' --image=alpine:latest --restart=Never -- /bin/bash
