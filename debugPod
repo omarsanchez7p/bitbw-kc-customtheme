@@ -5,13 +5,20 @@ metadata:
 spec:
   containers:
     - name: debug
-      image: registry.access.redhat.com/ubi9/ubi
+      image: registry.os.bwl.de/postgrescluster/debugpod:latest
       command: ["sleep", "3600"]
       volumeMounts:
         - name: theme-volume
           mountPath: /mnt/pvc
+      resources:
+            limits:
+              cpu: '300m'
+              memory: 256Mi
+            requests:
+              cpu: '200m'
+              memory: 128i
   volumes:
     - name: theme-volume
       persistentVolumeClaim:
-        claimName: keycloak-theme-pvc
+        claimName: custom-themes
   restartPolicy: Never
