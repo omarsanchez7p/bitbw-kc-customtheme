@@ -101,3 +101,18 @@ status:
   instances: 2
   observedGeneration: 25
   selector: 'app=keycloak,app.kubernetes.io/managed-by=keycloak-operator,app.kubernetes.io/instance=idp-keycloak'
+
+----------------------------------------------------------
+
+  unsupported:
+    podTemplate:
+      spec:
+        volumes:
+          - name: custom-themes
+            persistentVolumeClaim:
+              claimName: custom-themes
+        containers:
+          - name: keycloak
+            volumeMounts:
+              - name: custom-themes
+                mountPath: /opt/keycloak/providers/
