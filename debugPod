@@ -1,24 +1,103 @@
-apiVersion: v1
-kind: Pod
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
 metadata:
-  name: pvc-debug
+  creationTimestamp: '2024-12-05T12:49:33Z'
+  generation: 25
+  labels:
+    app: sso
+  managedFields:
+    - apiVersion: k8s.keycloak.org/v2alpha1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:labels':
+            .: {}
+            'f:app': {}
+        'f:spec':
+          .: {}
+          'f:db':
+            .: {}
+            'f:host': {}
+            'f:passwordSecret':
+              .: {}
+              'f:key': {}
+              'f:name': {}
+            'f:usernameSecret':
+              .: {}
+              'f:key': {}
+              'f:name': {}
+            'f:vendor': {}
+          'f:hostname':
+            .: {}
+            'f:hostname': {}
+            'f:strict': {}
+          'f:http':
+            .: {}
+            'f:httpEnabled': {}
+          'f:ingress':
+            .: {}
+            'f:enabled': {}
+          'f:instances': {}
+          'f:proxy':
+            .: {}
+            'f:headers': {}
+      manager: Mozilla
+      operation: Update
+      time: '2025-05-08T06:38:48Z'
+    - apiVersion: k8s.keycloak.org/v2alpha1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:status':
+          .: {}
+          'f:conditions': {}
+          'f:instances': {}
+          'f:observedGeneration': {}
+          'f:selector': {}
+      manager: fabric8-kubernetes-client
+      operation: Update
+      subresource: status
+      time: '2025-06-11T07:08:38Z'
+  name: idp-keycloak
+  namespace: poc-os-idp-keycloak
+  resourceVersion: '1690436392'
+  uid: 70d59edb-993b-465e-a9e7-612e15426322
 spec:
-  containers:
-    - name: debug
-      image: registry.os.bwl.de/postgrescluster/debugpod:latest
-      command: ["sleep", "3600"]
-      volumeMounts:
-        - name: theme-volume
-          mountPath: /mnt/pvc
-      resources:
-            limits:
-              cpu: '300m'
-              memory: 256Mi
-            requests:
-              cpu: '200m'
-              memory: 128i
-  volumes:
-    - name: theme-volume
-      persistentVolumeClaim:
-        claimName: custom-themes
-  restartPolicy: Never
+  db:
+    host: postgres-db
+    passwordSecret:
+      key: password
+      name: kcsecrets
+    usernameSecret:
+      key: username
+      name: kcsecrets
+    vendor: postgres
+  hostname:
+    hostname: id.bwl.de
+    strict: false
+  http:
+    httpEnabled: true
+  ingress:
+    enabled: false
+  instances: 2
+  proxy:
+    headers: forwarded
+status:
+  conditions:
+    - lastTransitionTime: '2025-05-23T07:55:16.574198914Z'
+      message: ''
+      observedGeneration: 25
+      status: 'True'
+      type: Ready
+    - lastTransitionTime: '2025-06-11T07:08:38.592925760Z'
+      message: ''
+      observedGeneration: 25
+      status: 'False'
+      type: HasErrors
+    - lastTransitionTime: '2025-05-23T07:55:16.574198914Z'
+      message: ''
+      observedGeneration: 25
+      status: 'False'
+      type: RollingUpdate
+  instances: 2
+  observedGeneration: 25
+  selector: 'app=keycloak,app.kubernetes.io/managed-by=keycloak-operator,app.kubernetes.io/instance=idp-keycloak'
